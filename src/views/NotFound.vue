@@ -1,12 +1,15 @@
 <template>
-  <div>labels
-    <Nav/>
+  <div>
+    <div>404</div>
+    <div>
+      <router-link to="/">返回首页</router-link>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
   export default {
-    name: 'Labels',
+    name: 'NotFound'
   };
 </script>
 
