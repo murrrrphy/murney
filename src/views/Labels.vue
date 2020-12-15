@@ -1,14 +1,17 @@
 <template>
   <div>
     <Layout>
-      <ol class="tags">
-        <li v-for="tag in tags" :key="tag.id">
+      <div class="tags">
+        <router-link class="tag"
+                     v-for="tag in tags"
+                     :key="tag.id"
+                     :to="`/labels/edit/${tag.id}`">
           <span>{{tag.name}}</span>
           <Icon name="right"/>
-        </li>
-      </ol>
+        </router-link>
+      </div>
       <div class="createTag-wrapper">
-        <button class="createTag" @click="createTag">新建标签</button>
+        <Button class="createTag" @click="createTag">新建标签</Button>
       </div>
     </Layout>
   </div>
@@ -28,8 +31,8 @@
       const name = window.prompt('请输入标签名');
       if (name) {
         const message = tagListModel.create(name);
-        if(message === 'duplicated'){
-          window.alert('标签重复')
+        if (message === 'duplicated') {
+          window.alert('标签重复');
         }
       }
     }
@@ -42,7 +45,7 @@
     font-size: 16px;
     padding-left: 16px;
 
-    > li {
+    > .tag {
       min-height: 44px;
       display: flex;
       align-items: center;
@@ -51,8 +54,8 @@
 
       svg {
         color: #666;
-        height: 28px;
-        width: 28px;
+        height: 18px;
+        width: 18px;
         margin-right: 16px;
       }
     }
