@@ -1,14 +1,17 @@
 <template>
   <Layout>
     <div class="navBar">
-      <Icon class="leftIcon" name="left"/>
+      <Icon class="leftIcon" name="left" @click.native="goBack"/>
       <span class="title">编辑标签</span>
     </div>
     <div class="inputItem">
-      <InputItem field-name="标签名" placeholder="请输入标签名"/>
+      <InputItem :value="tag.name"
+                 @update:value="update"
+                 field-name="标签名"
+                 placeholder="请输入标签名"/>
     </div>
     <div class="button-wrapper">
-      <Button>删除标签</Button>
+      <Button @click.native="remove">删除标签</Button>
     </div>
   </Layout>
 </template>
@@ -16,47 +19,65 @@
 <script lang="ts">
   import Vue from 'vue';
   import {Component} from 'vue-property-decorator';
-  import tagListModel from '@/models/tagList';
   import InputItem from '@/components/Money/InputItem.vue';
   import Button from '@/components/Button.vue';
+  import store from '@/store/index2';
+
   @Component({
     components: {Button, InputItem}
   })
   export default class EditLabel extends Vue {
+    tag = store.findTag(this.$route.params.id);
+
     created() {
-      const id = this.$route.params.id;
-      tagListModel.fetch;
-      const tags = tagListModel.data;
-      const tag = tags.filter(t => t.id === id)[0];
-      if (tag) {
-        console.log(tag);
-      } else {
+      if (!this.tag) {
         this.$router.replace('/404');
       }
+    }
+
+    update(name: string) {
+      if (this.tag) {
+        store.updateTag(this.tag.id, name);
+      }
+    }
+
+    remove() {
+      if (this.tag) {
+        if (store.removeTag(this.tag.id)) {
+          this.$router.back();
+        } else {
+          window.alert('删除失败');
+        }
+      }
+    }
+
+    goBack() {
+      this.$router.back();
     }
   }
 </script>
 
 <style lang="scss" scoped>
-.navBar{
-  text-align: center;
-  font-size: 16px;
-  padding: 12px 16px;
-  background: white;
-  position: relative;
-  > .leftIcon{
-    position: absolute;
-    left: 0;
-    top: 8px;
-  }
-}
+  .navBar {
+    text-align: center;
+    font-size: 16px;
+    padding: 12px 16px;
+    background: white;
+    position: relative;
 
-  .inputItem{
+    > .leftIcon {
+      position: absolute;
+      left: 0;
+      top: 8px;
+    }
+  }
+
+  .inputItem {
     background: white;
     margin-top: 8px;
   }
 
-  .button-wrapper{
+  .button-wrapper {
     text-align: center;
     padding: 16px;
     margin-top: 44-16px;
