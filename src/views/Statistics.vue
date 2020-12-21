@@ -1,6 +1,7 @@
 <template>
   <Layout>
     <Tabs :data-source="typeList" class-prefix="type" :value.sync="type"/>
+    <Chart :options="x"></Chart>
     <ol v-if="groupedList.length>0">
       <li v-for="(group,index) in groupedList" :key="index">
         <h3 class="title">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
@@ -28,11 +29,41 @@
   import typeList from '@/constants/typeList';
   import dayjs from 'dayjs';
   import clone from '@/lib/clone';
+  import Chart from '@/components/Chart.vue';
 
   @Component({
-    components: {Tabs}
+    components: {Tabs, Chart}
   })
   export default class Statistics extends Vue {
+    get x() {
+      return {
+        xAxis: {
+          type: 'category',
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun',
+            'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun',
+            'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun',
+            'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun',
+            'Mon', 'Tue']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [{
+          data: [120, 200, 150, 80, 70, 110, 130,
+            120, 200, 150, 80, 70, 110, 130,
+            120, 200, 150, 80, 70, 110, 130,
+            120, 200, 150, 80, 70, 110, 130,
+            120, 200],
+          type: 'line',
+          showBackground: true,
+          backgroundStyle: {
+            color: 'rgba(220, 220, 220, 0.8)'
+          }
+        }],
+        tooltip: {show:true}
+      };
+    }
+
     tagString(tags: Tag[]) {
       const tagNames = [];
       if (tags.length === 0) {
@@ -96,10 +127,11 @@
 </script>
 
 <style lang="scss" scoped>
-  .noResult{
+  .noResult {
     padding: 16px;
     text-align: center;
   }
+
   ::v-deep .type-item {
     background: #c4c4c4;
 
@@ -138,5 +170,10 @@
     margin-right: auto;
     margin-left: 16px;
     color: #999;
+  }
+
+  .echarts {
+    max-width: 100%;
+    height: 400px;
   }
 </style>

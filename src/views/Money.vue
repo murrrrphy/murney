@@ -2,7 +2,7 @@
   <Layout classPrefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
     <Tabs :data-source="typeList" :value.sync="record.type"/>
-    <div class="createAt">
+    <div class="createdAt">
       <InputItem field-name="日期"
                  type="date"
                  placeholder="在这里输入日期"
@@ -63,9 +63,5 @@
   .layout-content {
     display: flex;
     flex-direction: column-reverse;
-  }
-
-  .notes {
-    padding: 12px 0;
   }
 </style>

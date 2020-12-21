@@ -1163,7 +1163,7 @@
 
 "@types/echarts@^4.9.3":
   version "4.9.3"
-  resolved "https://registry.npm.taobao.org/@types/echarts/download/@types/echarts-4.9.3.tgz?cache=0&sync_timestamp=1608264031107&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fecharts%2Fdownload%2F%40types%2Fecharts-4.9.3.tgz#8a143cf315f6ae88d0778d75a133b378974d37d5"
+  resolved "https://registry.npm.taobao.org/@types/echarts/download/@types/echarts-4.9.3.tgz?cache=0&sync_timestamp=1608263940348&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fecharts%2Fdownload%2F%40types%2Fecharts-4.9.3.tgz#8a143cf315f6ae88d0778d75a133b378974d37d5"
   integrity sha1-ihQ88xX2rojQd411oTOzeJdNN9U=
   dependencies:
     "@types/zrender" "*"
@@ -4074,7 +4074,7 @@ ecc-jsbn@~0.1.1:
 
 echarts@^5.0.0:
   version "5.0.0"
-  resolved "https://registry.npm.taobao.org/echarts/download/echarts-5.0.0.tgz#66ec0ea47e3c93b2aadfbb2d719869932ad13ce0"
+  resolved "https://registry.npm.taobao.org/echarts/download/echarts-5.0.0.tgz?cache=0&sync_timestamp=1606890675689&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fecharts%2Fdownload%2Fecharts-5.0.0.tgz#66ec0ea47e3c93b2aadfbb2d719869932ad13ce0"
   integrity sha1-ZuwOpH48k7Kq37stcZhpkyrRPOA=
   dependencies:
     tslib "1.10.0"
