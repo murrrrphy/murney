@@ -2,7 +2,7 @@
   <Layout>
     <Tabs :data-source="typeList" class-prefix="type" :value.sync="type"/>
     <div class="chart-wrapper" ref="chartWrapper">
-      <Chart class="chart" :options="x"></Chart>
+      <Chart class="chart" :options="chartOptions"></Chart>
     </div>
     <ol v-if="groupedList.length>0">
       <li v-for="(group,index) in groupedList" :key="index">
@@ -38,29 +38,29 @@
     components: {Tabs, Chart}
   })
   export default class Statistics extends Vue {
-    get y(){
+    get keyValueList() {
       const today = new Date();
       const array = [];
       for (let i = 0; i <= 29; i++) {
         const dateString = dayjs(today).subtract(i, 'day').format('YYYY-MM-DD');
         const found = _.find(this.groupedList, {title: dateString});
-        array.push({date: dateString, amount: found ? found.total : 0});
+        array.push({key: dateString, value: found ? found.total : 0});
       }
       array.sort((a, b) => {
-        if (a.date > b.date) {
+        if (a.key > b.key) {
           return 1;
-        } else if (a.date === b.date) {
+        } else if (a.key === b.key) {
           return 0;
         } else {
           return -1;
         }
       });
-      return array
+      return array;
     }
 
-    get x() {
-      const keys = this.y.map(item => item.date);
-      const values = this.y.map(item => item.amount);
+    get chartOptions() {
+      const keys = this.keyValueList.map(item => item.key);
+      const values = this.keyValueList.map(item => item.value);
       return {
         grid: {
           left: 8,
@@ -71,6 +71,11 @@
             alignWithLabel: true
           },
           axisLine: {lineStyle: {color: '#666'}},
+          axisLabel: {
+            formatter: function (value: string) {
+              return value.substr(5);
+            }
+          },
           type: 'category',
           data: keys
         },
