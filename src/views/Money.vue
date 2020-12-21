@@ -2,9 +2,17 @@
   <Layout classPrefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
     <Tabs :data-source="typeList" :value.sync="record.type"/>
-    <InputItem field-name="备注"
-               placeholder="在这里输入备注"
-               :value.sync="record.notes"/>
+    <div class="createAt">
+      <InputItem field-name="日期"
+                 type="date"
+                 placeholder="在这里输入日期"
+                 :value.sync="record.createdAt"/>
+    </div>
+    <div class="notes">
+      <InputItem field-name="备注"
+                 placeholder="在这里输入备注"
+                 :value.sync="record.notes"/>
+    </div>
     <Tags @update:value="onUpdateTag"/>
   </Layout>
 </template>
@@ -28,7 +36,7 @@
       return this.$store.state.recordList;
     }
 
-    record: RecordItem = {tags: [], notes: '', type: '-', amount: 0};
+    record: RecordItem = {tags: [], notes: '', type: '-', amount: 0, createdAt: new Date().toISOString()};
 
     created() {
       this.$store.commit('fetchRecords');
