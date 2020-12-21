@@ -1,7 +1,9 @@
 <template>
   <Layout>
     <Tabs :data-source="typeList" class-prefix="type" :value.sync="type"/>
-    <Chart :options="x"></Chart>
+    <div class="chart-wrapper" ref="chartWrapper">
+      <Chart class="chart" :options="x"></Chart>
+    </div>
     <ol v-if="groupedList.length>0">
       <li v-for="(group,index) in groupedList" :key="index">
         <h3 class="title">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
@@ -30,37 +32,62 @@
   import dayjs from 'dayjs';
   import clone from '@/lib/clone';
   import Chart from '@/components/Chart.vue';
+  import _ from 'lodash';
 
   @Component({
     components: {Tabs, Chart}
   })
   export default class Statistics extends Vue {
+    get y(){
+      const today = new Date();
+      const array = [];
+      for (let i = 0; i <= 29; i++) {
+        const dateString = dayjs(today).subtract(i, 'day').format('YYYY-MM-DD');
+        const found = _.find(this.groupedList, {title: dateString});
+        array.push({date: dateString, amount: found ? found.total : 0});
+      }
+      array.sort((a, b) => {
+        if (a.date > b.date) {
+          return 1;
+        } else if (a.date === b.date) {
+          return 0;
+        } else {
+          return -1;
+        }
+      });
+      return array
+    }
+
     get x() {
+      const keys = this.y.map(item => item.date);
+      const values = this.y.map(item => item.amount);
       return {
+        grid: {
+          left: 8,
+          right: 8,
+        },
         xAxis: {
+          axisTick: {
+            alignWithLabel: true
+          },
+          axisLine: {lineStyle: {color: '#666'}},
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun',
-            'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun',
-            'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun',
-            'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun',
-            'Mon', 'Tue']
+          data: keys
         },
         yAxis: {
-          type: 'value'
+          show: false
         },
         series: [{
-          data: [120, 200, 150, 80, 70, 110, 130,
-            120, 200, 150, 80, 70, 110, 130,
-            120, 200, 150, 80, 70, 110, 130,
-            120, 200, 150, 80, 70, 110, 130,
-            120, 200],
+          symbolSize: 12,
+          itemStyle: {color: '#666'},
+          data: values,
           type: 'line',
           showBackground: true,
           backgroundStyle: {
             color: 'rgba(220, 220, 220, 0.8)'
           }
         }],
-        tooltip: {show:true}
+        tooltip: {show: true, triggerOn: 'click', position: 'top'}
       };
     }
 
@@ -123,6 +150,11 @@
     created() {
       this.$store.commit('fetchRecords');
     }
+
+    mounted() {
+      const div = (this.$refs.chartWrapper as HTMLDivElement);
+      div.scrollLeft = div.scrollWidth;
+    }
   }
 </script>
 
@@ -175,5 +207,17 @@
   .echarts {
     max-width: 100%;
     height: 400px;
+  }
+
+  .chart {
+    width: 430%;
+
+    &-wrapper {
+      overflow: auto;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
   }
 </style>
