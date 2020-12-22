@@ -1,12 +1,17 @@
 <template>
   <Layout>
     <Tabs :data-source="typeList" class-prefix="type" :value.sync="type"/>
-    <div class="chart-wrapper" ref="chartWrapper">
+    <div class="chart-wrapper" ref="chartWrapper" v-if="groupedList.length > 0">
       <Chart class="chart" :options="chartOptions"></Chart>
     </div>
     <ol v-if="groupedList.length>0">
       <li v-for="(group,index) in groupedList" :key="index">
-        <h3 class="title">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
+        <h3 class="title">
+          <span class="title-date">{{beautify(group.title)}}</span>
+          <span class="title-total">￥{{group.total}}
+            <span class="title-total-triangle"></span>
+          </span>
+        </h3>
         <ol>
           <li v-for="(item,index) in group.items"
               :key="index"
@@ -18,24 +23,33 @@
         </ol>
       </li>
     </ol>
-    <div v-else class="noResult">
-      目前没有相关记录
+    <div v-else class="noResult" ref = "noResult">
+      <div class="jiyibi-wrapper">
+        <Icon name="jiyibi" class="jiyibi"></Icon>
+      </div>
+      目前没有相关记录，快去记一笔吧~~
+      <div style="padding-top: 32px;">
+        <router-link to="/money">
+          <Button>记一笔</Button>
+        </router-link>
+      </div>
     </div>
   </Layout>
 </template>
 
 <script lang="ts">
   import Vue from 'vue';
-  import {Component} from 'vue-property-decorator';
+  import {Component, Watch} from 'vue-property-decorator';
   import Tabs from '@/components/Tabs.vue';
   import typeList from '@/constants/typeList';
   import dayjs from 'dayjs';
   import clone from '@/lib/clone';
   import Chart from '@/components/Chart.vue';
   import _ from 'lodash';
+  import Button from '@/components/Button.vue';
 
   @Component({
-    components: {Tabs, Chart}
+    components: {Button, Tabs, Chart}
   })
   export default class Statistics extends Vue {
     get keyValueList() {
@@ -84,7 +98,7 @@
         },
         series: [{
           symbolSize: 12,
-          itemStyle: {color: '#666'},
+          itemStyle: {color: '#023047'},
           data: values,
           type: 'line',
           showBackground: true,
@@ -157,8 +171,20 @@
     }
 
     mounted() {
-      const div = (this.$refs.chartWrapper as HTMLDivElement);
-      div.scrollLeft = div.scrollWidth;
+      const div = this.$refs.chartWrapper as HTMLDivElement;
+      console.log(div.scrollLeft);
+      if (div) {
+        div.scrollLeft = div.scrollWidth;
+        console.log(div.scrollLeft);
+      }
+    }
+
+    @Watch('type')
+    onTypeChanged(){
+      const div = this.$refs.noResult as HTMLDivElement;
+      if (div) {
+        div.scrollLeft = div.scrollWidth;
+      }
     }
   }
 </script>
@@ -170,7 +196,7 @@
   }
 
   ::v-deep .type-item {
-    background: #c4c4c4;
+    background: #75b9be;
 
     &.selected {
       background: white;
@@ -195,7 +221,28 @@
   }
 
   .title {
-    @extend %item
+    @extend %item;
+    padding: 0;
+    margin: 8px 16px 9px 16px;
+    border-bottom: 1px solid #fb8500;
+    border-bottom-left-radius: 8px;
+
+    &-date {
+      color: #fb8500;
+      border: 1px solid #fb8500;
+      border-radius: 8px;
+      padding: 2px 2px;
+      margin-bottom: -1px;
+    }
+
+    &-total {
+      color: #8a817c;
+
+      &-triangle {
+        border: 7px solid;
+        border-color: transparent transparent #fb8500 transparent;
+      }
+    }
   }
 
   .record {
@@ -223,6 +270,17 @@
       &::-webkit-scrollbar {
         display: none;
       }
+    }
+  }
+
+  .jiyibi {
+    height: 70px !important;
+    width: 70px !important;
+    color: grey;
+
+    &-wrapper {
+      padding-top: 125px;
+      padding-bottom: 20px;
     }
   }
 </style>

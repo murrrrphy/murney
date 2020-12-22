@@ -70,7 +70,7 @@
       @extend %innerShadow;
       font-size: 36px;
       font-family: Consolas, monospace;
-      padding: 9px 16px;
+      padding: 0 16px;
       text-align: right;
     }
 
@@ -93,7 +93,7 @@
           width: 50%;
         }
 
-        $bg: #f2f2f2;
+        $bg: #edebec;
 
         &:nth-child(1) {
           background: $bg;

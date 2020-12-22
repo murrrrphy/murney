@@ -13,12 +13,13 @@
 </template>
 
 <script lang="ts">
-  import {Component} from 'vue-property-decorator';
+  import {Component, Prop, Watch} from 'vue-property-decorator';
   import TagHelper from '@/mixins/TagHelper';
   import {mixins} from 'vue-class-component';
 
   @Component
   export default class Tags extends mixins(TagHelper) {
+    @Prop() tagCommit!: boolean;
     get tagList() {
       return this.$store.state.tagList;
     }
@@ -38,6 +39,11 @@
       }
       this.$emit('update:value', this.selectedTags);
     }
+
+    @Watch('tagCommit')
+    onTagCommitChanged(){
+      this.selectedTags = [];
+    }
   }
 </script>
 
@@ -49,6 +55,7 @@
     padding: 16px;
     display: flex;
     flex-direction: column-reverse;
+    overflow: auto;
 
     > .current {
       display: flex;

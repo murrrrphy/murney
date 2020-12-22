@@ -11,7 +11,7 @@
                  placeholder="请输入标签名"/>
     </div>
     <div class="button-wrapper">
-      <Button @click.native="remove">删除标签</Button>
+      <Button @click.native="remove" style="background: #d90429">删除标签</Button>
     </div>
   </Layout>
 </template>

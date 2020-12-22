@@ -33,7 +33,7 @@
 
 <style lang="scss" scoped>
   .tabs {
-    background: #c4c4c4;
+    background: #75b9be;
     display: flex;
     text-align: center;
     font-size: 24px;
@@ -53,7 +53,7 @@
         left: 0;
         width: 100%;
         height: 4px;
-        background: #333333;
+        background: #023e8a;
       }
     }
   }

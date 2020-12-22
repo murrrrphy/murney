@@ -20,5 +20,6 @@
   #app{
     max-width: 500px;
     margin: 0 auto;
+    max-height: 1vh;
   }
 </style>

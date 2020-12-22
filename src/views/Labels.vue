@@ -60,16 +60,14 @@
   }
 
   .createTag {
-    background: #767676;
-    color: white;
-    border-radius: 4px;
-    border: none;
-    padding: 8px 16px;
-
     &-wrapper {
       text-align: center;
-      padding: 16px;
-      margin: 44-16px;
+      position: fixed;
+      bottom: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      /*<!--padding: 16px;-->*/
+      /*<!--margin: 44-16px;-->*/
     }
   }
 </style>

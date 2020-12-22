@@ -2,14 +2,18 @@
   <div>
     <div>404</div>
     <div>
-      <router-link to="/">返回首页</router-link>
+      <router-link to="/">
+        <Button>返回首页</Button>
+      </router-link>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+  import Button from '@/components/Button.vue';
   export default {
-    name: 'NotFound'
+    name: 'NotFound',
+    components: {Button}
   };
 </script>
 

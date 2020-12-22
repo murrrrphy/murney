@@ -10,6 +10,7 @@ const store = new Vuex.Store({
   state: {
     recordList: [],
     createRecordError: null,
+    createTagError: null,
     tagList: [],
     currentTag: undefined
   } as RootState,
@@ -28,11 +29,38 @@ const store = new Vuex.Store({
     },
     fetchTags(state) {
       state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]');
+      if(!state.tagList || state.tagList.length ===0){
+        store.commit('createTag', '餐饮');
+        store.commit('createTag', '零食');
+        store.commit('createTag', '交通');
+        store.commit('createTag', '服饰');
+        store.commit('createTag', '健身');
+        store.commit('createTag', '医疗');
+        store.commit('createTag', '购物');
+        store.commit('createTag', '餐饮');
+        store.commit('createTag', '日用');
+        store.commit('createTag', '旅行');
+        store.commit('createTag', '学习');
+        store.commit('createTag', '烟酒');
+        store.commit('createTag', '居家');
+        store.commit('createTag', '通讯');
+        store.commit('createTag', '游戏');
+        store.commit('createTag', '宠物');
+        store.commit('createTag', '房租');
+        store.commit('createTag', '水电');
+        store.commit('createTag', '数码');
+        store.commit('createTag', '工资');
+        store.commit('createTag', '奖金');
+        store.commit('createTag', '红包');
+        store.commit('createTag', '报销');
+      }
     },
     createTag(state, name: string) {
+      state.createTagError = null;
       const names = state.tagList.map(item => item.name);
       if (names.indexOf(name) >= 0) {
-        window.alert('标签重复');
+        state.createTagError = new Error('tag name duplicated');
+        return;
       }
       const id = createId().toString();
       state.tagList.push({id, name: name});

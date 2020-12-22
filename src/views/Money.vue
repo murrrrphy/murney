@@ -1,7 +1,6 @@
 <template>
   <Layout classPrefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
-    <Tabs :data-source="typeList" :value.sync="record.type"/>
     <div class="createdAt">
       <InputItem field-name="日期"
                  type="date"
@@ -13,7 +12,8 @@
                  placeholder="在这里输入备注"
                  :value.sync="record.notes"/>
     </div>
-    <Tags @update:value="onUpdateTag"/>
+    <Tags @update:value="onUpdateTag"  :tagCommit = "tagCommit"/>
+    <Tabs :data-source="typeList" :value.sync="record.type"/>
   </Layout>
 </template>
 
@@ -30,6 +30,7 @@
     components: {Tags, InputItem, Tabs, NumberPad},
   })
   export default class Money extends Vue {
+    tagCommit = false;
     typeList = typeList;
 
     get recordList() {
@@ -54,6 +55,7 @@
       if (this.$store.state.createRecordError === null) {
         window.alert('已保存');
         this.record.notes = '';
+        this.tagCommit = true;
       }
     }
   }
