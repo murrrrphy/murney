@@ -23,7 +23,7 @@
         </ol>
       </li>
     </ol>
-    <div v-else class="noResult" ref = "noResult">
+    <div v-else class="noResult">
       <div class="jiyibi-wrapper">
         <Icon name="jiyibi" class="jiyibi"></Icon>
       </div>
@@ -171,19 +171,21 @@
     }
 
     mounted() {
-      const div = this.$refs.chartWrapper as HTMLDivElement;
-      console.log(div.scrollLeft);
-      if (div) {
+      if (this.$refs.chartWrapper) {
+        const div = this.$refs.chartWrapper as HTMLDivElement;
         div.scrollLeft = div.scrollWidth;
-        console.log(div.scrollLeft);
       }
     }
 
     @Watch('type')
     onTypeChanged(){
-      const div = this.$refs.noResult as HTMLDivElement;
-      if (div) {
-        div.scrollLeft = div.scrollWidth;
+      if(this.type === '-'){
+        this.$nextTick(()=>{
+          if (this.$refs.chartWrapper) {
+            const div = this.$refs.chartWrapper as HTMLDivElement;
+            div.scrollLeft = div.scrollWidth;
+          }
+        })
       }
     }
   }
